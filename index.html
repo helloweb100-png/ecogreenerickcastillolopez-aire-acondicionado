@@ -143,6 +143,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* grano sutil: le da profundidad tactil a los fondos oscuros, look premium/print */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 html.is-loading {
   overflow: hidden;
 }
@@ -529,7 +541,8 @@ body.is-ready .hero-eyebrow::after {
   background: rgba(6, 6, 8, 0.82);
   backdrop-filter: blur(22px) saturate(1.25);
   -webkit-backdrop-filter: blur(22px) saturate(1.25);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5),
+    0 1px 0 color-mix(in srgb, var(--red) 14%, transparent);
 }
 
 /* compacto: se encoge al bajar, vuelve al tamano normal al subir */
@@ -611,13 +624,16 @@ body.is-ready .hero-eyebrow::after {
   border: 1px solid var(--line-2);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.03);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 6px 16px rgba(0, 0, 0, 0.3);
   transition: width 0.6s var(--ease-out), height 0.6s var(--ease-out),
-    border-color 0.35s ease, background 0.35s ease, border-radius 0.6s var(--ease-out);
+    border-color 0.35s ease, background 0.35s ease, border-radius 0.6s var(--ease-out),
+    box-shadow 0.35s ease;
 }
 
 .brand:hover .brand-mark {
   border-color: color-mix(in srgb, var(--red) 45%, transparent);
   background: color-mix(in srgb, var(--red) 8%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 20px color-mix(in srgb, var(--red) 20%, transparent);
 }
 
 .brand-logo {
@@ -805,7 +821,7 @@ body.is-ready .hero-eyebrow::after {
   text-transform: uppercase;
   line-height: 1;
   cursor: pointer;
-  transition: transform 0.35s var(--ease-out), box-shadow 0.35s ease, background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+  transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out), background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
 }
 
 .btn > * {
@@ -827,11 +843,12 @@ body.is-ready .hero-eyebrow::after {
 }
 
 .btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.015);
 }
 
 .btn:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.98);
+  transition-duration: 0.15s;
 }
 
 .btn-primary {
@@ -839,22 +856,33 @@ body.is-ready .hero-eyebrow::after {
   background: linear-gradient(120deg, var(--red-dark), var(--red) 55%,
       color-mix(in srgb, var(--red) 70%, var(--red-dark)));
   border-color: rgba(71,214,229, 0.28);
-  box-shadow: 0 10px 34px color-mix(in srgb, var(--red) 24%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -14px 20px -10px rgba(0, 0, 0, 0.25),
+    0 2px 8px rgba(0, 0, 0, 0.35),
+    0 12px 34px color-mix(in srgb, var(--red) 26%, transparent);
 }
 
 .btn-primary:hover {
-  box-shadow: 0 16px 48px color-mix(in srgb, var(--red) 38%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -14px 20px -10px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 20px 54px color-mix(in srgb, var(--red) 42%, transparent);
 }
 
 .btn-outline {
   color: var(--text);
   border-color: var(--line-3);
   background: rgba(255, 255, 255, 0.02);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 8px 22px rgba(0, 0, 0, 0.22);
 }
 
 .btn-outline:hover {
-  border-color: var(--paper);
+  border-color: color-mix(in srgb, var(--red-2) 55%, var(--paper));
   background: rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 14px 34px rgba(0, 0, 0, 0.32),
+    0 0 0 1px color-mix(in srgb, var(--red) 20%, transparent);
 }
 
 .btn-lg {
@@ -950,7 +978,7 @@ body.is-ready .hero-eyebrow::after {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: url("img/1.jpg") center center / cover no-repeat;
+  background: url("img/hero-instalacion-ac.jpg") center center / cover no-repeat;
   background-attachment: fixed;
   opacity: 0;
   transition: opacity 1.8s ease;
@@ -1396,6 +1424,20 @@ main section[id] {
   overflow: hidden;
   border: 1px solid var(--line-2);
   background: var(--panel);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 30px 60px -20px rgba(0, 0, 0, 0.55),
+    0 14px 28px -12px rgba(0, 0, 0, 0.45);
+  transition: box-shadow 0.6s var(--ease-out), border-color 0.6s ease;
+}
+
+.service-media:hover {
+  border-color: var(--line-3);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 40px 80px -20px rgba(0, 0, 0, 0.6),
+    0 18px 36px -14px rgba(0, 0, 0, 0.5),
+    0 0 0 1px color-mix(in srgb, var(--red) 16%, transparent);
 }
 
 .service-media > img {
@@ -1403,6 +1445,13 @@ main section[id] {
   height: 100%;
   object-fit: cover;
   filter: contrast(1.02) brightness(1.04);
+  transform: scale(1);
+  transition: transform 1.4s var(--ease-out), filter 0.6s ease;
+}
+
+.service-media:hover > img {
+  transform: scale(1.055);
+  filter: contrast(1.04) brightness(1.06);
 }
 
 .service-media::after {
@@ -1670,8 +1719,9 @@ main section[id] {
   padding: clamp(20px, 2.2vw, 28px) clamp(22px, 2.4vw, 32px);
   border-radius: 14px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 20px 40px -18px rgba(0, 0, 0, 0.5);
   text-align: center;
-  transition: background 0.5s ease, transform 0.6s var(--ease-out);
+  transition: background 0.5s ease, transform 0.6s var(--ease-out), box-shadow 0.5s ease;
 }
 
 .timeline-step:nth-child(even) .timeline-card {
@@ -1714,12 +1764,20 @@ main section[id] {
   overflow: hidden;
   border: 1px solid var(--line-2);
   background: var(--panel);
+  box-shadow: 0 24px 48px -18px rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+}
+
+.brochure-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.58), 0 0 0 1px color-mix(in srgb, var(--red) 18%, transparent);
 }
 
 .brochure-item > img {
   width: 100%;
   height: auto;
   filter: contrast(1.02) brightness(1.03);
+  transition: transform 1.2s var(--ease-out), filter 0.6s ease;
 }
 
 .brochure-item::after {
@@ -1736,7 +1794,7 @@ main section[id] {
 }
 
 .js [data-reveal="media"].brochure-item.is-visible:hover > img {
-  transform: scale(1.03);
+  transform: scale(1.05);
 }
 
 /* =========================================================
@@ -1952,14 +2010,20 @@ main section[id] {
   border-radius: 50%;
   color: #111111;
   background: linear-gradient(155deg, var(--whatsapp) 0%, var(--whatsapp-dark) 100%);
-  box-shadow: 0 16px 36px rgba(18, 140, 126, 0.38), 0 4px 14px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -10px 16px -6px rgba(0, 0, 0, 0.3),
+    0 16px 36px rgba(18, 140, 126, 0.38), 0 4px 14px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: transform 0.4s var(--ease-out), box-shadow 0.4s ease;
 }
 
 .whatsapp-float:hover {
   transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 22px 48px rgba(18, 140, 126, 0.46), 0 6px 18px rgba(0, 0, 0, 0.24);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -10px 16px -6px rgba(0, 0, 0, 0.25),
+    0 22px 48px rgba(18, 140, 126, 0.46), 0 6px 18px rgba(0, 0, 0, 0.24);
 }
 
 .whatsapp-float svg {
@@ -2896,13 +2960,58 @@ main section[id] {
                 <span class="tag">Climatización</span>
               </div>
               <h3 class="service-title" data-reveal>Aire acondicionado y refrigeración</h3>
-              <p class="service-desc" data-reveal>Instalamos, reparamos y damos mantenimiento a equipos de aire acondicionado y refrigeración en espacios residenciales y comerciales. Trabajamos con todas las marcas y capacidades.</p>
+              <p class="service-desc" data-reveal>Instalamos, reparamos y damos mantenimiento a equipos de aire acondicionado y refrigeración en espacios residenciales y comerciales. Revisamos carga de gas refrigerante, drenajes, conexiones eléctricas y control, para que el equipo enfríe parejo y sin fugas. Trabajamos con todas las marcas, capacidades y tipos de equipo: mini-split, central, ventana y cámaras de refrigeración.</p>
               <ul class="service-list">
                 <li data-reveal>Instalación de equipos nuevos mini-split y central</li>
-                <li data-reveal>Reparación de fallas eléctricas y mecánicas</li>
-                <li data-reveal>Mantenimiento preventivo de unidades en uso</li>
+                <li data-reveal>Cálculo correcto de capacidad (toneladas) según el espacio</li>
+                <li data-reveal>Reparación de fallas eléctricas, mecánicas y de gas refrigerante</li>
+                <li data-reveal>Mantenimiento preventivo: limpieza, drenaje y revisión de presión</li>
                 <li data-reveal>Servicio para casa y negocio en Uruapan</li>
                 <li data-reveal>Diagnóstico y cotización sin compromiso</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="service-row service-row--reverse">
+            <div class="service-media" data-reveal="media">
+              <img src="img/servicio-hidroneumatico.jpg" alt="Sistema hidroneumático con tanques de presión y tuberías" loading="lazy">
+            </div>
+            <div class="service-body" data-reveal-group>
+              <div class="service-body-head" data-reveal>
+                <span class="service-index" aria-hidden="true">02</span>
+                <span class="tag">Presión de agua constante</span>
+              </div>
+              <h3 class="service-title" data-reveal>Sistemas hidroneumáticos</h3>
+              <p class="service-desc" data-reveal>Un sistema hidroneumático es una bomba de agua conectada a un tanque de presión que guarda agua y aire comprimido. Sirve para tener presión de agua constante en toda la casa o negocio, sin depender de un tinaco en la azotea ni sufrir cambios de presión al abrir dos llaves al mismo tiempo. Es la solución ideal para casas de varios niveles, edificios, negocios y lugares donde la presión de la red municipal no es suficiente.</p>
+              <p class="service-desc" data-reveal>La instalación incluye calcular la bomba y el tanque correctos según el consumo de agua del lugar, conectar el equipo a la cisterna o toma de agua, calibrar el presostato (el switch que enciende y apaga la bomba) y probar el sistema para que arranque parejo y sin golpes de ariete.</p>
+              <ul class="service-list">
+                <li data-reveal>Instalación de bomba y tanque hidroneumático nuevo</li>
+                <li data-reveal>Cálculo de capacidad según consumo de la casa o negocio</li>
+                <li data-reveal>Revisión y reparación de sistemas hidroneumáticos existentes</li>
+                <li data-reveal>Calibración de presostato y presión de aire del tanque</li>
+                <li data-reveal>Mantenimiento preventivo para evitar golpes de ariete y fugas</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="service-row">
+            <div class="service-media" data-reveal="media">
+              <img src="img/servicio-tanque-solar.jpg" alt="Tanque de agua para sistema de calentamiento solar instalado en azotea" loading="lazy">
+            </div>
+            <div class="service-body" data-reveal-group>
+              <div class="service-body-head" data-reveal>
+                <span class="service-index" aria-hidden="true">03</span>
+                <span class="tag">Calentamiento solar de agua</span>
+              </div>
+              <h3 class="service-title" data-reveal>Tanques de agua para sistemas solares</h3>
+              <p class="service-desc" data-reveal>Un sistema de agua solar usa un tanque térmico conectado a tubos colectores que aprovechan el sol para calentar el agua, sin gastar gas ni electricidad todos los días. El agua caliente se guarda en el tanque y baja por gravedad o presión hacia regaderas y llaves de la casa o negocio, lo que reduce de forma importante el consumo de gas LP.</p>
+              <p class="service-desc" data-reveal>La instalación incluye montar el tanque y el colector en la azotea con la orientación e inclinación correctas para aprovechar mejor el sol en Uruapan, conectar la tubería de agua fría y caliente al sistema existente, sellar e impermeabilizar la base, y verificar que no haya fugas ni aire atrapado en las líneas.</p>
+              <ul class="service-list">
+                <li data-reveal>Instalación de tanque y colector solar en azotea</li>
+                <li data-reveal>Orientación e inclinación correctas para mayor rendimiento</li>
+                <li data-reveal>Conexión al sistema de agua caliente de la casa o negocio</li>
+                <li data-reveal>Revisión de fugas, aislamiento y sellado de la base</li>
+                <li data-reveal>Ahorro real de gas LP y electricidad a largo plazo</li>
               </ul>
             </div>
           </article>
@@ -2913,16 +3022,16 @@ main section[id] {
             </div>
             <div class="service-body" data-reveal-group>
               <div class="service-body-head" data-reveal>
-                <span class="service-index" aria-hidden="true">02</span>
+                <span class="service-index" aria-hidden="true">04</span>
                 <span class="tag">Instalaciones especiales</span>
               </div>
               <h3 class="service-title" data-reveal>Electricidad, plomería y gas LP</h3>
-              <p class="service-desc" data-reveal>Servicios complementarios para dejar tu instalación completa y segura. Las instalaciones de gas LP deben cumplir con Protección Civil: nosotros lo hacemos bien desde el inicio, para que tu casa o negocio quede en regla y sin riesgos.</p>
+              <p class="service-desc" data-reveal>Servicios complementarios para dejar tu instalación completa y segura. Cubrimos desde circuitos y contactos dedicados para el aire acondicionado hasta reparación de fugas de agua y gas. Las instalaciones de gas LP deben cumplir con Protección Civil: nosotros lo hacemos bien desde el inicio, con materiales certificados y prueba de hermeticidad, para que tu casa o negocio quede en regla y sin riesgos.</p>
               <ul class="service-list">
                 <li data-reveal>Instalaciones eléctricas de fuerza y control</li>
-                <li data-reveal>Sistemas hidroneumáticos residenciales y comerciales</li>
+                <li data-reveal>Circuitos dedicados y protecciones para equipos de aire acondicionado</li>
                 <li data-reveal>Instalación y conexión de gas LP conforme a Protección Civil</li>
-                <li data-reveal>Reparación de fugas y fallas en plomería</li>
+                <li data-reveal>Reparación de fugas y fallas en plomería y tubería de agua</li>
               </ul>
             </div>
           </article>
@@ -2933,15 +3042,16 @@ main section[id] {
             </div>
             <div class="service-body" data-reveal-group>
               <div class="service-body-head" data-reveal>
-                <span class="service-index" aria-hidden="true">03</span>
+                <span class="service-index" aria-hidden="true">05</span>
                 <span class="tag">Proyectos comerciales</span>
               </div>
               <h3 class="service-title" data-reveal>Soluciones técnicas para negocios</h3>
-              <p class="service-desc" data-reveal>Atendemos empresas, locales y establecimientos que necesitan sistemas de climatización, refrigeración o instalaciones técnicas funcionales y seguras, con diagnóstico en sitio.</p>
+              <p class="service-desc" data-reveal>Atendemos empresas, locales y establecimientos que necesitan sistemas de climatización, refrigeración, hidroneumáticos o instalaciones técnicas funcionales y seguras, con diagnóstico en sitio y un solo punto de contacto para todo el proyecto.</p>
               <ul class="service-list">
                 <li data-reveal>Diagnóstico técnico en sitio sin costo adicional</li>
                 <li data-reveal>Proyectos de climatización para locales y oficinas</li>
                 <li data-reveal>Sistemas de refrigeración para uso comercial</li>
+                <li data-reveal>Sistemas hidroneumáticos y de agua caliente para negocios</li>
                 <li data-reveal>Coordinación de electricidad, plomería y gas en un solo servicio</li>
               </ul>
             </div>
